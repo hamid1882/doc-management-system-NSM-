@@ -4,7 +4,12 @@ import { AlignJustify, ChevronLeft, File, Folder } from "lucide-react";
 import FolderItem from "./FolderItem";
 import { useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { allDataState, selectedFilesState } from "../redux/atoms";
+import {
+  allDataState,
+  getAllFilesNumbers,
+  getAllFoldersNumbers,
+  selectedFilesState,
+} from "../redux/atoms";
 import {
   findItemAndParents,
   toggleFolderExpanded,
@@ -30,6 +35,8 @@ function FolderSidebar() {
   const [rowItems, setRowItems] = useRecoilState(allDataState);
   const allTableData = useRecoilValue(allDataState);
   const setSelectedFiles = useSetRecoilState<string[]>(selectedFilesState);
+  const folderCount = useRecoilValue(getAllFoldersNumbers);
+  const fileCount = useRecoilValue(getAllFilesNumbers);
 
   const handleFolderSelect = (id: number) => {
     setSelectedFiles([]);
@@ -81,7 +88,9 @@ function FolderSidebar() {
                   <div>
                     <div className="w-[32px] mb-[8px]">{item.icon}</div>
                     <p className="text-[12px] font-[400]">{item.name}</p>
-                    <p className="text-[20px] font-semibold">{item.number}+</p>
+                    <p className="text-[20px] font-semibold">
+                      {index === 0 ? folderCount : fileCount}+
+                    </p>
                   </div>
                   {index === 0 ? (
                     <div className="h-[60px] bg-gray-100 w-[1px] mx-[18px]"></div>

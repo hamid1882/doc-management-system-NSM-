@@ -4,19 +4,30 @@ import {
   PopoverHandler,
 } from "@material-tailwind/react";
 import { Plus } from "lucide-react";
-import { useRecoilState } from "recoil";
-import { isCreateFolderPopupState } from "../redux/atoms";
 import { useState } from "react";
+import { useRecoilState } from "recoil";
+import {
+  isCreateFilePopupState,
+  isCreateFolderPopupState,
+} from "../redux/atoms";
 
 function AddItemsPopover() {
   const [isPopover, setIsPopover] = useState(false);
   const [openCreateFolderModal, setOpenCreateFolderModal] = useRecoilState(
     isCreateFolderPopupState
   );
+  const [openCreateFileModel, setOpenCreateFileModal] = useRecoilState(
+    isCreateFilePopupState
+  );
 
   const handleOpen = () => {
     setIsPopover(false);
     setOpenCreateFolderModal(!openCreateFolderModal);
+  };
+
+  const handleFileOpen = () => {
+    setIsPopover(false);
+    setOpenCreateFileModal(!openCreateFileModel);
   };
 
   return (
@@ -42,7 +53,10 @@ function AddItemsPopover() {
             >
               <p>Create Folder</p>
             </button>
-            <button className="p-[12px] hover:bg-primary-100/80 cursor-pointer w-full text-left">
+            <button
+              onClick={handleFileOpen}
+              className="p-[12px] hover:bg-primary-100/80 cursor-pointer w-full text-left"
+            >
               <p>Upload File</p>
             </button>
           </>

@@ -1,11 +1,41 @@
 "use client";
 
-import { useRecoilState } from "recoil";
-import { isCreateFolderPopupState } from "../redux/atoms";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { allDataState, isCreateFolderPopupState } from "../redux/atoms";
 import { X } from "lucide-react";
+import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { TreeItem } from "../data/initialContent";
 
 function CreateFolderModal() {
   const [open, setOpen] = useRecoilState(isCreateFolderPopupState);
+  const id = uuidv4();
+
+  const [inputData, setInputData] = useState<TreeItem>({
+    name: "",
+    description: "",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    expanded: false,
+    children: [],
+    type: "folder" as const,
+    id: Number(id),
+  });
+
+  const setAllFolderData = useSetRecoilState(allDataState);
+
+  const handleInputData = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = () => {
+    if (!inputData.name || !inputData.description) {
+      window.alert("Please fill all the inputs");
+    }
+
+    setAllFolderData((prev) => [inputData, ...prev]);
+    setOpen(false);
+  };
 
   return (
     <div
@@ -29,6 +59,9 @@ function CreateFolderModal() {
             <label>Name</label>
             <input
               type="text"
+              name="name"
+              value={inputData["name"]}
+              onChange={handleInputData}
               placeholder="Folder name"
               className="w-full rounded-[10px] border border-gray-100 p-[12px] focus:outline-0"
             />
@@ -37,6 +70,9 @@ function CreateFolderModal() {
             <label>Description</label>
             <input
               type="text"
+              name="description"
+              value={inputData["description"]}
+              onChange={handleInputData}
               placeholder="Folder Description"
               className="w-full rounded-[10px] border border-gray-100 p-[12px] focus:outline-0"
             />
@@ -49,7 +85,10 @@ function CreateFolderModal() {
           >
             Cancel
           </button>
-          <button className="w-[120px] bg-primary-500 hover:bg-primary-500/80 p-[12px] rounded-[10px] text-white cursor-pointer">
+          <button
+            onClick={handleSubmit}
+            className="w-[120px] bg-primary-500 hover:bg-primary-500/80 p-[12px] rounded-[10px] text-white cursor-pointer"
+          >
             Create
           </button>
         </div>
