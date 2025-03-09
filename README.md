@@ -1,8 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Document Management System
 
-## Getting Started
+This project is a Document Management System created as part of an interview assessment. It provides a clean, intuitive interface for organizing, storing, and managing documents and folders.
 
-First, run the development server:
+## 🎨 Design
+
+This implementation follows the provided Figma designs, ensuring a consistent and professional user experience. The UI features a modern, clean aesthetic with a focus on usability and efficient document management.
+
+## 🛠️ Tech Stack
+
+- **Frontend Framework**: Next.js 14 (React)
+- **Styling**: Tailwind CSS with Material Tailwind components
+- **State Management**: Recoil
+- **Language**: TypeScript
+- **Icons**: Lucide React
+
+## 🚀 Features
+
+- Hierarchical folder structure for document organization
+- Document upload and management
+- Expandable/collapsible folder tree
+- Clean, responsive UI based on Figma designs
+- Breadcrumb navigation for folder hierarchy
+
+## 🏃‍♂️ Running the Project
+
+1. Clone the repository
+2. Install dependencies:
 
 ```bash
 npm run dev
