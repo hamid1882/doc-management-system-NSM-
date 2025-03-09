@@ -26,13 +26,13 @@ function FolderItem({
           : "hover:bg-primary-150"
       }`}
     >
-      <div className="flex items-center gap-[8px]">
+      <div className="flex items-center gap-[8px] w-[90%]">
         {type === "folder" ? (
           <Folder className="w-[17px] h-[17px]" />
         ) : (
-          <File className="w-[17px] h-[17px]" />
+          <File className="w-[26px] h-[26px]" />
         )}
-        <p className="text-[13px] font-[400]">{name}</p>
+        <p className="text-[13px] font-[400] truncate">{name}</p>
       </div>
       <div
         onClick={() => setAddFolderPopup(true)}

@@ -70,7 +70,7 @@ function MainContentRow({
             expanded ? "rotate-90" : ""
           } transition-all fill-black`}
         />
-        <div className="flex items-center gap-[18px]">
+        <div className="flex items-center gap-[18px] w-full">
           <div className="w-[25px] h-[25px] relative select-none">
             {type === "folder" ? (
               <Folder className="w-full h-full" />
@@ -85,7 +85,7 @@ function MainContentRow({
               <></>
             )}
           </div>
-          <p className="text-[14px] font-medium">{name}</p>
+          <p className="text-[14px] font-medium truncate">{name}</p>
         </div>
       </div>
       {/* description */}
