@@ -30,6 +30,7 @@ function CreateFolderModal() {
   const handleSubmit = () => {
     if (!inputData.name || !inputData.description) {
       window.alert("Please fill all the inputs");
+      return;
     }
 
     setAllFolderData((prev) => [inputData, ...prev]);
