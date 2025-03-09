@@ -29,7 +29,12 @@ function ContentRowPopover() {
           <EllipsisVertical className="cursor-pointer mr-[10px]" />
         </div>
       </PopoverHandler>
-      <PopoverContent className="min-w-[150px] w-fit border border-gray-100 rounded-[10px] shadow outline-0 overflow-hidden">
+      <PopoverContent
+        placeholder="Folder Details"
+        onPointerEnterCapture={() => {}}
+        onPointerLeaveCapture={() => {}}
+        className="min-w-[150px] w-fit border border-gray-100 rounded-[10px] shadow outline-0 overflow-hidden"
+      >
         <div className="p-[12px] bg-white border-b border-b-gray-100 flex items-center gap-[8px] hover:bg-primary-100/80 cursor-pointer">
           <Pencil className="w-[20px] h-[20px]" />
           <p>Edit</p>

@@ -29,7 +29,12 @@ function AddItemsPopover() {
         <PopoverHandler className="w-[35px] h-[35px] rounded-[10px] bg-primary-500 hover:bg-primary-500/80 flex items-center justify-center p-[8px] cursor-pointer relative text-white">
           <Plus className="w-full h-full text-white fill-white" />
         </PopoverHandler>
-        <PopoverContent className="shadow-2xl border border-gray-100 w-[150px] outline-0 rounded-[10px] overflow-hidden">
+        <PopoverContent
+          placeholder="Create Folder"
+          onPointerEnterCapture={() => {}}
+          onPointerLeaveCapture={() => {}}
+          className="shadow-2xl border border-gray-100 w-[150px] outline-0 rounded-[10px] overflow-hidden"
+        >
           <>
             <button
               onClick={handleOpen}

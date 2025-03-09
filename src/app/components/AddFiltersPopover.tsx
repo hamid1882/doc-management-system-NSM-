@@ -18,7 +18,12 @@ function AddFiltersPopover() {
       <PopoverHandler className="w-[35px] h-[35px] rounded-[10px] bg-primary-500 hover:bg-primary-500/80 flex items-center justify-center p-[8px] cursor-pointer relative text-white">
         <Filter className="w-full h-full text-white fill-white" />
       </PopoverHandler>
-      <PopoverContent className="shadow-2xl border border-gray-100 w-[440px] outline-0 rounded-[10px] overflow-hidden">
+      <PopoverContent
+        placeholder="Filters"
+        onPointerEnterCapture={() => {}}
+        onPointerLeaveCapture={() => {}}
+        className="shadow-2xl border border-gray-100 w-[440px] outline-0 rounded-[10px] overflow-hidden"
+      >
         <>
           <div className="p-[12px] border-b border-b-gray-100 flex justify-between items-center">
             <p className="font-semibold text-[15px]">Filters</p>
