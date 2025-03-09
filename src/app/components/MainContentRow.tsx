@@ -84,7 +84,7 @@ function MainContentRow({
         onClick={(e) => e.stopPropagation()}
         className="w-[10%] flex justify-center items-center"
       >
-        <ContentRowPopover />
+        <ContentRowPopover id={id} />
       </div>
     </div>
   );

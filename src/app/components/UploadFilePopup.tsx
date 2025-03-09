@@ -1,9 +1,8 @@
 "use client";
 
 import { FileUp, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { v4 as uuidv4 } from "uuid";
 import { TreeItem } from "../data/initialContent";
 import { allDataState, isCreateFilePopupState } from "../redux/atoms";
 import FileUploadProgress from "./FileUploadProgress";
@@ -11,7 +10,8 @@ import FileUploadProgress from "./FileUploadProgress";
 function UploadFilePopup() {
   const [open, setOpen] = useRecoilState(isCreateFilePopupState);
   const [progress, setProgress] = useState(0);
-  const id = uuidv4();
+  const uniqueId = Date.now() + Math.floor(Math.random() * 1000);
+
   const [file, setFile] = useState<File | null>(null);
   const [inputData, setInputData] = useState<TreeItem>({
     name: "",
@@ -21,7 +21,7 @@ function UploadFilePopup() {
     expanded: false,
     children: [],
     type: "file" as const,
-    id: Number(id),
+    id: uniqueId,
   });
 
   const setAllFolderData = useSetRecoilState(allDataState);

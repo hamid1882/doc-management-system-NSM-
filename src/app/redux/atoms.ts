@@ -1,4 +1,4 @@
-import { atom, selector } from "recoil";
+import { atom, selector, selectorFamily } from "recoil";
 import { rowItems, TreeItem } from "../data/initialContent";
 
 export const allDataState = atom({
@@ -75,4 +75,45 @@ export const getAllFilesNumbers = selector({
 
     return countFiles(data);
   },
+});
+
+// Selector family to remove an item by ID
+export const removeItemById = selectorFamily({
+  key: "removeItemById",
+  get:
+    () =>
+    ({ get }) => {
+      // This is just for reading the current state
+      return get(allDataState);
+    },
+  set:
+    (itemId: number) =>
+    ({ set }) => {
+      set(allDataState, (prevItems) => {
+        // Helper function to remove an item recursively
+        const removeItem = (items: TreeItem[]): TreeItem[] => {
+          // Filter out the item with the matching ID at current level
+          const filteredItems = items.filter((item) => item.id !== itemId);
+
+          // If we removed an item (length changed), return the filtered array
+          if (filteredItems.length !== items.length) {
+            return filteredItems;
+          }
+
+          // Otherwise, recursively check children of each item
+          return filteredItems.map((item) => {
+            if (item.children && item.children.length > 0) {
+              return {
+                ...item,
+                children: removeItem(item.children),
+              };
+            }
+            return item;
+          });
+        };
+
+        // Apply the removal function to the root items
+        return removeItem(prevItems);
+      });
+    },
 });

@@ -11,12 +11,23 @@ import {
   Trash2,
 } from "lucide-react";
 import React, { useState } from "react";
-import { useSetRecoilState } from "recoil";
-import { isCreateFolderPopupState } from "../redux/atoms";
+import { useRecoilCallback, useSetRecoilState } from "recoil";
+import {
+  isCreateFilePopupState,
+  isCreateFolderPopupState,
+  removeItemById,
+  selectedFilesState,
+} from "../redux/atoms";
 
-function ContentRowPopover() {
+function ContentRowPopover({ id }: { id: number }) {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const openCreateFolderPopup = useSetRecoilState(isCreateFolderPopupState);
+  const openCreateFilePopup = useSetRecoilState(isCreateFilePopupState);
+  const setSelectedFilesState = useSetRecoilState(selectedFilesState);
+  const handleDelete = useRecoilCallback(({ set }) => (id: number) => {
+    set(removeItemById(id), []); // The second parameter should be an empty array instead of null
+    setSelectedFilesState([]);
+  });
 
   return (
     <Popover
@@ -39,18 +50,33 @@ function ContentRowPopover() {
           <Pencil className="w-[20px] h-[20px]" />
           <p>Edit</p>
         </div>
-        <div className="p-[12px] bg-white border-b border-b-gray-100 flex items-center gap-[8px] hover:bg-primary-100/80 cursor-pointer">
+        <div
+          onClick={() => {
+            handleDelete(id);
+            setPopoverOpen(false);
+          }}
+          className="p-[12px] bg-white border-b border-b-gray-100 flex items-center gap-[8px] hover:bg-primary-100/80 cursor-pointer"
+        >
           <Trash2 className="w-[20px] h-[20px]" />
           <p>Delete</p>
         </div>
         <div
-          onClick={() => openCreateFolderPopup(true)}
+          onClick={() => {
+            openCreateFolderPopup(true);
+            setPopoverOpen(false);
+          }}
           className="p-[12px] bg-white border-b border-b-gray-100 flex items-center gap-[8px] hover:bg-primary-100/80 cursor-pointer"
         >
           <FolderPlus className="w-[20px] h-[20px]" />
           <p>Create Folder</p>
         </div>
-        <div className="p-[12px] bg-white border-b border-b-gray-100 flex items-center gap-[8px] hover:bg-primary-100/80 cursor-pointer">
+        <div
+          onClick={() => {
+            openCreateFilePopup(true);
+            setPopoverOpen(false);
+          }}
+          className="p-[12px] bg-white border-b border-b-gray-100 flex items-center gap-[8px] hover:bg-primary-100/80 cursor-pointer"
+        >
           <FilePlus className="w-[20px] h-[20px]" />
           <p>Upload Document</p>
         </div>

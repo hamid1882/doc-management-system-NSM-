@@ -1,6 +1,6 @@
 import { File, Folder, Plus } from "lucide-react";
-import { useRecoilValue } from "recoil";
-import { selectedFilesState } from "../redux/atoms";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isCreateFolderPopupState, selectedFilesState } from "../redux/atoms";
 
 function FolderItem({
   id,
@@ -14,6 +14,7 @@ function FolderItem({
   handleFolderSelect: (id: number) => void;
 }) {
   const selectedFilesArr = useRecoilValue(selectedFilesState);
+  const setAddFolderPopup = useSetRecoilState(isCreateFolderPopupState);
 
   return (
     <div
@@ -33,7 +34,10 @@ function FolderItem({
         )}
         <p className="text-[13px] font-[400]">{name}</p>
       </div>
-      <div className="w-[20px] h-[20px] rounded-full bg-primary-200 hover:bg-secondary-500 hover:text-white">
+      <div
+        onClick={() => setAddFolderPopup(true)}
+        className="w-[20px] h-[20px] rounded-full bg-primary-200 hover:bg-secondary-500 hover:text-white"
+      >
         <Plus className="w-full h-full font-thin text-[8px] p-[2px]" />
       </div>
     </div>

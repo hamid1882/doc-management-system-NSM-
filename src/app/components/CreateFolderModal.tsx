@@ -1,15 +1,14 @@
 "use client";
 
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { allDataState, isCreateFolderPopupState } from "../redux/atoms";
 import { X } from "lucide-react";
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { TreeItem } from "../data/initialContent";
+import { allDataState, isCreateFolderPopupState } from "../redux/atoms";
 
 function CreateFolderModal() {
   const [open, setOpen] = useRecoilState(isCreateFolderPopupState);
-  const id = uuidv4();
+  const uniqueId = Date.now() + Math.floor(Math.random() * 1000);
 
   const [inputData, setInputData] = useState<TreeItem>({
     name: "",
@@ -19,7 +18,7 @@ function CreateFolderModal() {
     expanded: false,
     children: [],
     type: "folder" as const,
-    id: Number(id),
+    id: uniqueId,
   });
 
   const setAllFolderData = useSetRecoilState(allDataState);
