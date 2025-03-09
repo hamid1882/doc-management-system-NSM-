@@ -16,8 +16,8 @@ export const rowItems: TreeItem[] = [
     type: "folder",
     name: "Project Documentation",
     description: "Main project documentation and resources",
-    createdAt: "15/03/2025 09:00",
-    updatedAt: "15/03/2025 09:00",
+    createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+    updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
     expanded: false,
     children: [
       {
@@ -25,8 +25,8 @@ export const rowItems: TreeItem[] = [
         type: "folder",
         name: "Technical Specs",
         description: "Technical specifications and architecture documents",
-        createdAt: "15/03/2025 09:15",
-        updatedAt: "15/03/2025 09:15",
+        createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+        updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
         expanded: false,
         children: [
           {
@@ -34,8 +34,8 @@ export const rowItems: TreeItem[] = [
             type: "file",
             name: "Architecture.pdf",
             description: "System architecture overview",
-            createdAt: "15/03/2025 10:00",
-            updatedAt: "15/03/2025 10:00",
+            createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+            updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
             expanded: false,
           },
           {
@@ -43,8 +43,8 @@ export const rowItems: TreeItem[] = [
             type: "file",
             name: "Database_Schema.pdf",
             description: "Database design documentation",
-            createdAt: "15/03/2025 10:30",
-            updatedAt: "15/03/2025 10:30",
+            createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+            updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
             expanded: false,
           },
         ],
@@ -54,8 +54,8 @@ export const rowItems: TreeItem[] = [
         type: "folder",
         name: "User Manuals",
         description: "End-user documentation",
-        createdAt: "15/03/2025 09:45",
-        updatedAt: "15/03/2025 09:45",
+        createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+        updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
         expanded: false,
         children: [
           {
@@ -63,8 +63,8 @@ export const rowItems: TreeItem[] = [
             type: "file",
             name: "Admin_Guide.pdf",
             description: "Administrator's manual",
-            createdAt: "15/03/2025 11:00",
-            updatedAt: "15/03/2025 11:00",
+            createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+            updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
             expanded: false,
           },
         ],
@@ -76,8 +76,8 @@ export const rowItems: TreeItem[] = [
     type: "folder",
     name: "Human Resources",
     description: "HR related documents and policies",
-    createdAt: "15/03/2025 09:00",
-    updatedAt: "15/03/2025 09:00",
+    createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+    updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
     expanded: false,
     children: [
       {
@@ -85,8 +85,8 @@ export const rowItems: TreeItem[] = [
         type: "folder",
         name: "Employee Handbooks",
         description: "Company policies and procedures",
-        createdAt: "15/03/2025 09:30",
-        updatedAt: "15/03/2025 09:30",
+        createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+        updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
         expanded: false,
         children: [
           {
@@ -94,8 +94,8 @@ export const rowItems: TreeItem[] = [
             type: "file",
             name: "Employee_Handbook_2025.pdf",
             description: "Latest employee handbook",
-            createdAt: "15/03/2025 10:30",
-            updatedAt: "15/03/2025 10:30",
+            createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+            updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
             expanded: false,
           },
           {
@@ -103,8 +103,8 @@ export const rowItems: TreeItem[] = [
             type: "file",
             name: "Code_of_Conduct.pdf",
             description: "Company code of conduct",
-            createdAt: "15/03/2025 10:45",
-            updatedAt: "15/03/2025 10:45",
+            createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+            updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
             expanded: false,
           },
         ],
@@ -114,8 +114,8 @@ export const rowItems: TreeItem[] = [
         type: "folder",
         name: "Benefits",
         description: "Employee benefits information",
-        createdAt: "15/03/2025 09:45",
-        updatedAt: "15/03/2025 09:45",
+        createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+        updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
         expanded: false,
         children: [
           {
@@ -123,8 +123,8 @@ export const rowItems: TreeItem[] = [
             type: "file",
             name: "Healthcare_Plans.pdf",
             description: "Healthcare benefits overview",
-            createdAt: "15/03/2025 11:15",
-            updatedAt: "15/03/2025 11:15",
+            createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+            updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
             expanded: false,
           },
         ],
@@ -136,8 +136,8 @@ export const rowItems: TreeItem[] = [
     type: "folder",
     name: "Financial Records",
     description: "Financial documents and reports",
-    createdAt: "15/03/2025 09:00",
-    updatedAt: "15/03/2025 09:00",
+    createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+    updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
     expanded: false,
     children: [
       {
@@ -145,8 +145,8 @@ export const rowItems: TreeItem[] = [
         type: "folder",
         name: "2025 Reports",
         description: "Financial reports for 2025",
-        createdAt: "15/03/2025 11:00",
-        updatedAt: "15/03/2025 11:00",
+        createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+        updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
         expanded: false,
         children: [
           {
@@ -154,8 +154,8 @@ export const rowItems: TreeItem[] = [
             type: "file",
             name: "Q1_Report.xlsx",
             description: "Q1 2025 Financial Report",
-            createdAt: "15/03/2025 11:30",
-            updatedAt: "15/03/2025 11:30",
+            createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+            updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
             expanded: false,
           },
           {
@@ -163,8 +163,8 @@ export const rowItems: TreeItem[] = [
             type: "file",
             name: "Q2_Report.xlsx",
             description: "Q2 2025 Financial Report",
-            createdAt: "15/03/2025 11:45",
-            updatedAt: "15/03/2025 11:45",
+            createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+            updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
             expanded: false,
           },
         ],
@@ -176,8 +176,8 @@ export const rowItems: TreeItem[] = [
     type: "folder",
     name: "Marketing Materials",
     description: "Marketing campaigns and assets",
-    createdAt: "15/03/2025 09:00",
-    updatedAt: "15/03/2025 09:00",
+    createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+    updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
     expanded: false,
     children: [
       {
@@ -185,8 +185,8 @@ export const rowItems: TreeItem[] = [
         type: "folder",
         name: "Campaign 2025",
         description: "2025 Marketing Campaign Materials",
-        createdAt: "15/03/2025 12:00",
-        updatedAt: "15/03/2025 12:00",
+        createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+        updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
         expanded: false,
         children: [
           {
@@ -194,8 +194,8 @@ export const rowItems: TreeItem[] = [
             type: "file",
             name: "Campaign_Strategy.pptx",
             description: "Marketing strategy presentation",
-            createdAt: "15/03/2025 12:30",
-            updatedAt: "15/03/2025 12:30",
+            createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+            updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
             expanded: false,
           },
         ],
@@ -207,8 +207,8 @@ export const rowItems: TreeItem[] = [
     type: "folder",
     name: "Legal Documents",
     description: "Contracts and legal documentation",
-    createdAt: "15/03/2025 09:00",
-    updatedAt: "15/03/2025 09:00",
+    createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+    updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
     expanded: false,
     children: [
       {
@@ -216,8 +216,8 @@ export const rowItems: TreeItem[] = [
         type: "folder",
         name: "Contracts",
         description: "Client and vendor contracts",
-        createdAt: "15/03/2025 13:00",
-        updatedAt: "15/03/2025 13:00",
+        createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+        updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
         expanded: false,
         children: [
           {
@@ -225,8 +225,8 @@ export const rowItems: TreeItem[] = [
             type: "file",
             name: "Service_Agreement.pdf",
             description: "Standard service agreement template",
-            createdAt: "15/03/2025 13:30",
-            updatedAt: "15/03/2025 13:30",
+            createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+            updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
             expanded: false,
           },
         ],
@@ -238,8 +238,8 @@ export const rowItems: TreeItem[] = [
     type: "folder",
     name: "Research and Development",
     description: "R&D projects and findings",
-    createdAt: "15/03/2025 09:00",
-    updatedAt: "15/03/2025 09:00",
+    createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+    updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
     expanded: false,
     children: [
       {
@@ -247,8 +247,8 @@ export const rowItems: TreeItem[] = [
         type: "folder",
         name: "Project Alpha",
         description: "Confidential R&D project",
-        createdAt: "15/03/2025 14:00",
-        updatedAt: "15/03/2025 14:00",
+        createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+        updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
         expanded: false,
         children: [
           {
@@ -256,8 +256,8 @@ export const rowItems: TreeItem[] = [
             type: "file",
             name: "Research_Findings.pdf",
             description: "Project research results",
-            createdAt: "15/03/2025 14:30",
-            updatedAt: "15/03/2025 14:30",
+            createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+            updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
             expanded: false,
           },
         ],
@@ -269,8 +269,8 @@ export const rowItems: TreeItem[] = [
     type: "folder",
     name: "IT Infrastructure",
     description: "IT systems documentation",
-    createdAt: "15/03/2025 09:00",
-    updatedAt: "15/03/2025 09:00",
+    createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+    updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
     expanded: false,
     children: [
       {
@@ -278,8 +278,8 @@ export const rowItems: TreeItem[] = [
         type: "folder",
         name: "Network Diagrams",
         description: "Network architecture documents",
-        createdAt: "15/03/2025 15:00",
-        updatedAt: "15/03/2025 15:00",
+        createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+        updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
         expanded: false,
         children: [
           {
@@ -287,8 +287,8 @@ export const rowItems: TreeItem[] = [
             type: "file",
             name: "Network_Topology.vsdx",
             description: "Network topology diagram",
-            createdAt: "15/03/2025 15:30",
-            updatedAt: "15/03/2025 15:30",
+            createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+            updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
             expanded: false,
           },
         ],
@@ -300,8 +300,8 @@ export const rowItems: TreeItem[] = [
     type: "folder",
     name: "Customer Support",
     description: "Support documentation and guides",
-    createdAt: "15/03/2025 09:00",
-    updatedAt: "15/03/2025 09:00",
+    createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+    updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
     expanded: false,
     children: [
       {
@@ -309,8 +309,8 @@ export const rowItems: TreeItem[] = [
         type: "folder",
         name: "User Guides",
         description: "Product user guides",
-        createdAt: "15/03/2025 16:00",
-        updatedAt: "15/03/2025 16:00",
+        createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+        updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
         expanded: false,
         children: [
           {
@@ -318,8 +318,8 @@ export const rowItems: TreeItem[] = [
             type: "file",
             name: "Troubleshooting_Guide.pdf",
             description: "Product troubleshooting steps",
-            createdAt: "15/03/2025 16:30",
-            updatedAt: "15/03/2025 16:30",
+            createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+            updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
             expanded: false,
           },
         ],
@@ -331,8 +331,8 @@ export const rowItems: TreeItem[] = [
     type: "folder",
     name: "Quality Assurance",
     description: "QA testing documents",
-    createdAt: "15/03/2025 09:00",
-    updatedAt: "15/03/2025 09:00",
+    createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+    updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
     expanded: false,
     children: [
       {
@@ -340,8 +340,8 @@ export const rowItems: TreeItem[] = [
         type: "folder",
         name: "Test Cases",
         description: "QA test cases and results",
-        createdAt: "15/03/2025 17:00",
-        updatedAt: "15/03/2025 17:00",
+        createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+        updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
         expanded: false,
         children: [
           {
@@ -349,8 +349,8 @@ export const rowItems: TreeItem[] = [
             type: "file",
             name: "Test_Plan.xlsx",
             description: "Detailed test plan",
-            createdAt: "15/03/2025 17:30",
-            updatedAt: "15/03/2025 17:30",
+            createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+            updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
             expanded: false,
           },
         ],
@@ -362,8 +362,8 @@ export const rowItems: TreeItem[] = [
     type: "folder",
     name: "Operations",
     description: "Operational procedures and documents",
-    createdAt: "15/03/2025 09:00",
-    updatedAt: "15/03/2025 09:00",
+    createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+    updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
     expanded: false,
     children: [
       {
@@ -371,8 +371,8 @@ export const rowItems: TreeItem[] = [
         type: "folder",
         name: "Standard Procedures",
         description: "Standard operating procedures",
-        createdAt: "15/03/2025 18:00",
-        updatedAt: "15/03/2025 18:00",
+        createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+        updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
         expanded: false,
         children: [
           {
@@ -380,8 +380,8 @@ export const rowItems: TreeItem[] = [
             type: "file",
             name: "Emergency_Procedures.pdf",
             description: "Emergency response procedures",
-            createdAt: "15/03/2025 18:30",
-            updatedAt: "15/03/2025 18:30",
+            createdAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
+            updatedAt: new Date("2025-03-15T18:30:00.000Z").toISOString(),
             expanded: false,
           },
         ],

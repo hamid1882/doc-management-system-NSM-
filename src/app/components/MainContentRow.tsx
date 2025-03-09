@@ -30,6 +30,27 @@ function MainContentRow({
 }: MainContentRowTypes) {
   const selectedFilesArr = useRecoilValue(selectedFilesState);
 
+  // Format date function
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+
+    const formattedTime = date.toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+
+    return { formattedDate, formattedTime };
+  };
+
+  const createdAtFormatted = formatDate(createdAt);
+  const updatedAtFormatted = formatDate(updatedAt);
+
   return (
     <div
       onClick={() => handleFolderSelect(id)}
@@ -71,13 +92,17 @@ function MainContentRow({
       <p className="truncate w-[30%] text-left">{description}</p>
       {/* created at */}
       <p className="w-[20%] text-center truncate">
-        {createdAt}
-        <span className="font-semibold mx-[8px]">23:30</span>
+        {createdAtFormatted.formattedDate}
+        <span className="font-semibold mx-[8px]">
+          {createdAtFormatted.formattedTime}
+        </span>
       </p>
       {/* updated at */}
       <p className="w-[20%] text-center truncate">
-        {updatedAt}
-        <span className="font-semibold mx-[8px]">23:30</span>
+        {updatedAtFormatted.formattedDate}
+        <span className="font-semibold mx-[8px]">
+          {updatedAtFormatted.formattedTime}
+        </span>
       </p>
       {/* action */}
       <div
