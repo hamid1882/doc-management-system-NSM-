@@ -1,9 +1,32 @@
-import { atom, selector, selectorFamily } from "recoil";
+import { atom, AtomEffect, selector, selectorFamily } from "recoil";
 import { rowItems, TreeItem } from "../data/initialContent";
+
+// LocalStorage effect for persisting data
+const localStorageEffect: AtomEffect<TreeItem[]> = ({ setSelf, onSet }) => {
+  // When the atom is first initialized, try to get the value from localStorage
+  const savedValue = localStorage.getItem("doc-management-data");
+  if (savedValue != null) {
+    try {
+      setSelf(JSON.parse(savedValue));
+    } catch (error) {
+      console.error("Failed to parse saved data", error);
+    }
+  }
+
+  // Subscribe to state changes and update localStorage
+  onSet((newValue, _, isReset) => {
+    if (isReset) {
+      localStorage.removeItem("doc-management-data");
+    } else {
+      localStorage.setItem("doc-management-data", JSON.stringify(newValue));
+    }
+  });
+};
 
 export const allDataState = atom({
   key: "allDataState",
   default: rowItems,
+  effects: [localStorageEffect],
 });
 
 export const selectedFilesState = atom<string[]>({
