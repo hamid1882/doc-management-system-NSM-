@@ -68,7 +68,7 @@ function MainContentRow({
         <ChevronRight
           className={`${expanded && type === "folder" ? "w-[30px]" : "w-0"} ${
             expanded ? "rotate-90" : ""
-          } transition-all fill-black`}
+          } transition-all`}
         />
         <div className="flex items-center gap-[18px] w-full">
           <div className="w-[25px] h-[25px] relative select-none">
