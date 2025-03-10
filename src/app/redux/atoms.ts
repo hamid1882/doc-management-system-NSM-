@@ -143,3 +143,8 @@ export const removeItemById = selectorFamily({
       });
     },
 });
+
+export const selectedItemIdState = atom<number | null>({
+  key: "selectedItemIdState",
+  default: null,
+});

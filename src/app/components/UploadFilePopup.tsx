@@ -2,9 +2,13 @@
 
 import { FileUp, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { TreeItem } from "../data/initialContent";
-import { allDataState, isCreateFilePopupState } from "../redux/atoms";
+import {
+  allDataState,
+  isCreateFilePopupState,
+  selectedItemIdState,
+} from "../redux/atoms";
 import FileUploadProgress from "./FileUploadProgress";
 
 function UploadFilePopup() {
@@ -13,6 +17,7 @@ function UploadFilePopup() {
   const uniqueId = Date.now() + Math.floor(Math.random() * 1000);
 
   const [file, setFile] = useState<File | null>(null);
+  const selectedItemId = useRecoilValue(selectedItemIdState);
   const [inputData, setInputData] = useState<TreeItem>({
     name: "",
     description: "",
@@ -26,12 +31,44 @@ function UploadFilePopup() {
 
   const setAllFolderData = useSetRecoilState(allDataState);
 
+  // Helper function to recursively find and update the selected folder
+  const updateFolderStructure = (items: TreeItem[]): TreeItem[] => {
+    return items.map((item) => {
+      // If this is the selected folder, add the new folder to its children
+      if (item.id === selectedItemId) {
+        return {
+          ...item,
+          children: [inputData, ...(item.children || [])],
+        };
+      }
+
+      // If this item has children, recursively search them
+      if (item.children && item.children.length > 0) {
+        return {
+          ...item,
+          children: updateFolderStructure(item.children),
+        };
+      }
+
+      // Otherwise, return the item unchanged
+      return item;
+    });
+  };
+
   const handleSubmit = () => {
     if (!inputData.name || !inputData.description) {
       window.alert("Please fill all the inputs");
     }
 
-    setAllFolderData((prev) => [inputData, ...prev]);
+    setAllFolderData((prev) => {
+      // If no folder is selected, add to root level
+      if (!selectedItemId) {
+        return [inputData, ...prev];
+      }
+      // Apply the update function to the current data
+      return updateFolderStructure(prev);
+    });
+
     setOpen(false);
     setFile(null);
   };

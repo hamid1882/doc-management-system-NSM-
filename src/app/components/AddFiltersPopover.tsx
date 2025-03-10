@@ -8,6 +8,26 @@ import { useState } from "react";
 
 function AddFiltersPopover() {
   const [openPopover, setOpenPopover] = useState(false);
+  const [filterInputData, setFilterInputData] = useState({
+    name: "",
+    description: "",
+    date: "",
+  });
+
+  const handleFilterInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterInputData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleClear = () => {
+    setFilterInputData({
+      name: "",
+      description: "",
+      date: "",
+    });
+  };
 
   return (
     <Popover
@@ -22,13 +42,16 @@ function AddFiltersPopover() {
         placeholder="Filters"
         onPointerEnterCapture={() => {}}
         onPointerLeaveCapture={() => {}}
-        className="shadow-2xl border border-gray-100 w-[440px] outline-0 rounded-[10px] overflow-hidden"
+        className="shadow-2xl border border-gray-100 w-[440px] outline-0 rounded-[10px] overflow-hidden p-0"
       >
         <>
           <div className="p-[12px] border-b border-b-gray-100 flex justify-between items-center">
             <p className="font-semibold text-[15px]">Filters</p>
             <div className="flex gap-[14px] items-center cursor-pointer">
-              <p className="font-semibold text-[15px] text-red-primary border-b border-b-red-primary">
+              <p
+                onClick={handleClear}
+                className="font-semibold text-[15px] text-red-primary border-b border-b-red-primary"
+              >
                 Clear
               </p>
               <X
@@ -41,6 +64,9 @@ function AddFiltersPopover() {
             <div className="flex flex-col gap-[6px]">
               <label>Name</label>
               <input
+                name="name"
+                value={filterInputData["name"]}
+                onChange={handleFilterInputChange}
                 type="text"
                 placeholder="Folder name"
                 className="w-full rounded-[10px] border border-gray-100 p-[12px] focus:outline-0"
@@ -52,6 +78,9 @@ function AddFiltersPopover() {
                 type="text"
                 placeholder="Folder Description"
                 className="w-full rounded-[10px] border border-gray-100 p-[12px] focus:outline-0"
+                name="description"
+                value={filterInputData["description"]}
+                onChange={handleFilterInputChange}
               />
             </div>
             <div className="flex flex-col gap-[6px]">
@@ -60,6 +89,9 @@ function AddFiltersPopover() {
                 type="date"
                 placeholder="Select Date"
                 className="w-full rounded-[10px] border border-gray-100 p-[12px] focus:outline-0"
+                name="date"
+                value={filterInputData["date"]}
+                onChange={handleFilterInputChange}
               />
             </div>
           </div>

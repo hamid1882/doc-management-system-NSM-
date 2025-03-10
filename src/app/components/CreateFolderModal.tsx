@@ -2,14 +2,18 @@
 
 import { X } from "lucide-react";
 import { useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { TreeItem } from "../data/initialContent";
-import { allDataState, isCreateFolderPopupState } from "../redux/atoms";
+import {
+  allDataState,
+  isCreateFolderPopupState,
+  selectedItemIdState,
+} from "../redux/atoms";
 
 function CreateFolderModal() {
   const [open, setOpen] = useRecoilState(isCreateFolderPopupState);
   const uniqueId = Date.now() + Math.floor(Math.random() * 1000);
-
+  const selectedItemId = useRecoilValue(selectedItemIdState);
   const [inputData, setInputData] = useState<TreeItem>({
     name: "",
     description: "",
@@ -27,13 +31,45 @@ function CreateFolderModal() {
     setInputData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  // Helper function to recursively find and update the selected folder
+  const updateFolderStructure = (items: TreeItem[]): TreeItem[] => {
+    return items.map((item) => {
+      // If this is the selected folder, add the new folder to its children
+      if (item.id === selectedItemId) {
+        return {
+          ...item,
+          children: [inputData, ...(item.children || [])],
+        };
+      }
+
+      // If this item has children, recursively search them
+      if (item.children && item.children.length > 0) {
+        return {
+          ...item,
+          children: updateFolderStructure(item.children),
+        };
+      }
+
+      // Otherwise, return the item unchanged
+      return item;
+    });
+  };
+
   const handleSubmit = () => {
     if (!inputData.name || !inputData.description) {
       window.alert("Please fill all the inputs");
       return;
     }
 
-    setAllFolderData((prev) => [inputData, ...prev]);
+    setAllFolderData((prev) => {
+      // If no folder is selected, add to root level
+      if (!selectedItemId) {
+        return [inputData, ...prev];
+      }
+      // Apply the update function to the current data
+      return updateFolderStructure(prev);
+    });
+
     setOpen(false);
   };
 

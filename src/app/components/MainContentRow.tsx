@@ -11,7 +11,7 @@ type MainContentRowTypes = {
   updatedAt: string;
   expanded: boolean;
   id: number;
-  handleFolderSelect: (id: number) => void;
+  handleFolderSelect: (id: number, type: string) => void;
   childrenLength: undefined | number;
   level: number;
 };
@@ -53,8 +53,8 @@ function MainContentRow({
 
   return (
     <div
-      onClick={() => handleFolderSelect(id)}
-      onDoubleClick={() => handleFolderSelect(id)}
+      onClick={() => handleFolderSelect(id, type)}
+      onDoubleClick={() => handleFolderSelect(id, type)}
       style={{ width: `calc(100% - ${level * 24}px)` }}
       className={`flex justify-between gap-[16px]  transition-all h-[60px] items-center border-b border-gray-100  ${
         selectedFilesArr &&
@@ -109,7 +109,7 @@ function MainContentRow({
         onClick={(e) => e.stopPropagation()}
         className="w-[10%] flex justify-center items-center"
       >
-        <ContentRowPopover id={id} />
+        <ContentRowPopover id={id} type={type} />
       </div>
     </div>
   );

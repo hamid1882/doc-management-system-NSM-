@@ -6,17 +6,26 @@ import {
   findItemAndParents,
   toggleFolderExpanded,
 } from "../data/initialContent";
-import { allDataState, selectedFilesState } from "../redux/atoms";
+import {
+  allDataState,
+  selectedFilesState,
+  selectedItemIdState,
+} from "../redux/atoms";
 import FolderTree from "./FolderTree";
 
 function MainContent() {
   const [rowItems, setRowItems] = useRecoilState(allDataState);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const setSelectedFiles = useSetRecoilState<string[]>(selectedFilesState);
+  const setSelectedItemId = useSetRecoilState(selectedItemIdState);
 
-  const handleFolderSelect = (id: number) => {
+  const handleFolderSelect = (id: number, type: string) => {
     setSelectedFiles([]);
     setSelectedId(id);
+
+    if (type === "folder") {
+      setSelectedItemId(id);
+    }
 
     const updatedItems = toggleFolderExpanded(rowItems, id);
     setRowItems(updatedItems);

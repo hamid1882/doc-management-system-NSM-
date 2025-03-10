@@ -447,36 +447,3 @@ export const findItemAndParents = (
   // If we get here, the item wasn't found in this branch
   return [];
 };
-
-// export const findItemAndParents = (
-//   items: TreeItem[],
-//   itemId: number,
-//   parentNames: string[] = []
-// ): string[] => {
-//   for (const item of items) {
-//     // Create a new array with current path (don't modify the original parentNames)
-//     const currentPath = [...parentNames];
-
-//     // If current item is a folder, add it to the path
-//     if (item.type === "folder") {
-//       currentPath.push(item.name);
-//     }
-
-//     // Check if this is the item we're looking for
-//     if (item.id === itemId) {
-//       return currentPath;
-//     }
-
-//     // If this item has children, search recursively
-//     if (item.children && item.children.length > 0) {
-//       const result = findItemAndParents(item.children, itemId, currentPath);
-//       // If found in children, return the result
-//       if (result.length > 0) {
-//         return result;
-//       }
-//     }
-//   }
-
-//   // If we get here, the item wasn't found in this branch
-//   return [];
-// };

@@ -1,19 +1,20 @@
 "use client";
 
 import { AlignJustify, ChevronLeft, File, Folder } from "lucide-react";
-import FolderItem from "./FolderItem";
 import { useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  findItemAndParents,
+  toggleFolderExpanded,
+} from "../data/initialContent";
 import {
   allDataState,
   getAllFilesNumbers,
   getAllFoldersNumbers,
   selectedFilesState,
+  selectedItemIdState,
 } from "../redux/atoms";
-import {
-  findItemAndParents,
-  toggleFolderExpanded,
-} from "../data/initialContent";
+import FolderItem from "./FolderItem";
 
 const items = [
   {
@@ -37,9 +38,14 @@ function FolderSidebar() {
   const setSelectedFiles = useSetRecoilState<string[]>(selectedFilesState);
   const folderCount = useRecoilValue(getAllFoldersNumbers);
   const fileCount = useRecoilValue(getAllFilesNumbers);
+  const setSelectedItemId = useSetRecoilState(selectedItemIdState);
 
-  const handleFolderSelect = (id: number) => {
+  const handleFolderSelect = (id: number, type: string) => {
     setSelectedFiles([]);
+
+    if (type === "folder") {
+      setSelectedItemId(id);
+    }
 
     const updatedItems = toggleFolderExpanded(rowItems, id);
     setRowItems(updatedItems);
@@ -106,11 +112,11 @@ function FolderSidebar() {
             {allTableData && allTableData.length > 0 ? (
               allTableData.map((itemData, index) => (
                 <FolderItem
-                  id={itemData.id}
-                  name={itemData.name}
-                  type={itemData.type}
                   key={index}
+                  data={itemData}
+                  selectedId={null} // You might want to use a state variable here
                   handleFolderSelect={handleFolderSelect}
+                  level={0}
                 />
               ))
             ) : (

@@ -4,7 +4,7 @@ import MainContentRow from "./MainContentRow";
 interface FolderTreeProps {
   data: TreeItem;
   selectedId: number | null;
-  handleFolderSelect: (id: number) => void;
+  handleFolderSelect: (id: number, type: string) => void;
   level?: number;
 }
 
