@@ -133,7 +133,7 @@ function MainContent() {
             )}
           </tbody>
         </table>
-        {rowItems && rowItems.length > 0 && !isLoading ? <Pagination /> : <></>}
+        {rowItems ? <Pagination /> : <></>}
       </div>
     </>
   );

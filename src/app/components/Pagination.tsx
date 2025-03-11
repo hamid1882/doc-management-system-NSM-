@@ -48,7 +48,7 @@ function Pagination() {
                   onClick={() => handleStepClick(index + 1)}
                   className={`h-[38px] w-[38px] flex justify-center items-center rounded-[10px] cursor-pointer text-sm  ${
                     paginationData.currentPage === index + 1
-                      ? "bg-black hover:bg-black text-white"
+                      ? "bg-primary-500 hover:bg-primary-500/90 text-white"
                       : "hover:bg-black/10"
                   }`}
                   key={index}
