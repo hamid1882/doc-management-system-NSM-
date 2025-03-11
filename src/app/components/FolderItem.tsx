@@ -22,13 +22,13 @@ function FolderItem({
     <div className="flex flex-col gap-[6px] w-full">
       <div
         onClick={() => handleFolderSelect(data.id, data.type)}
-        className={`flex justify-between p-[12px] border-b border-b-gray-100 cursor-pointer relative ${
+        className={`flex justify-between p-[12px] border-b border-b-gray-100 cursor-pointer relative w-full ${
           selectedId === data.id
             ? "bg-primary-200/50 hover:bg-primary-200/30"
             : "hover:bg-primary-150"
         }`}
       >
-        <div className="flex items-center gap-[8px] w-[88%] overflow-hidden ">
+        <div className="flex items-center gap-[8px] overflow-hidden w-full">
           {/* Add left padding based on level */}
           <div
             style={{ paddingLeft: `${level * 10}px` }}
@@ -45,7 +45,9 @@ function FolderItem({
             {data.type === "folder" ? (
               <Folder className="w-[17px] h-[17px] z-10" />
             ) : (
-              <File className="w-[22px] h-[22px] z-10" />
+              <div className="w-[18px] h-[18px] z-10">
+                <File className="w-full h-full" />
+              </div>
             )}
             <p className="text-[13px] font-[400] truncate">{data.name}</p>
           </div>
