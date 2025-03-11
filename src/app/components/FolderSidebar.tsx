@@ -113,7 +113,7 @@ function FolderSidebar() {
             </div>
           </div>
           <hr className="text-gray-100" />
-          <div className={`p-[12px] m-[6px] overflow-y-auto h-[80%] w-full`}>
+          <div className={`p-[12px] m-[6px] overflow-y-auto h-[80%]`}>
             {allTableData && allTableData.length > 0 ? (
               allTableData.map((itemData, index) => (
                 <FolderItem
