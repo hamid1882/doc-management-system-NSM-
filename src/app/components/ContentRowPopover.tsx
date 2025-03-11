@@ -1,3 +1,4 @@
+import documentsService from "@/api/services/documentsService";
 import {
   Popover,
   PopoverContent,
@@ -7,15 +8,18 @@ import {
   EllipsisVertical,
   FilePlus,
   FolderPlus,
+  LoaderCircle,
   Pencil,
   Trash2,
 } from "lucide-react";
 import { useState } from "react";
-import { useRecoilCallback, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { parseApiData } from "../data/initialContent";
 import {
+  allDataState,
   isCreateFilePopupState,
   isCreateFolderPopupState,
-  removeItemById,
+  isEditFolderPopupState,
   selectedFilesState,
   selectedItemIdState,
 } from "../redux/atoms";
@@ -23,18 +27,36 @@ import {
 function ContentRowPopover({ id, type }: { id: number; type: string }) {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const openCreateFolderPopup = useSetRecoilState(isCreateFolderPopupState);
+  const openEditFolderPopup = useSetRecoilState(isEditFolderPopupState);
   const openCreateFilePopup = useSetRecoilState(isCreateFilePopupState);
   const setSelectedFilesState = useSetRecoilState(selectedFilesState);
-  const handleDelete = useRecoilCallback(({ set }) => (id: number) => {
-    set(removeItemById(id), []); // The second parameter should be an empty array instead of null
-    setSelectedFilesState([]);
-  });
   const setSelectedItemId = useSetRecoilState(selectedItemIdState);
+  const [allFolderData, setAllFolderData] = useRecoilState(allDataState);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+
+  const handleDeleteFolder = async (id: number) => {
+    setIsLoadingDelete(true);
+    try {
+      await documentsService.deleteDocument(id);
+
+      const allDocuments = await documentsService.getAllDocuments();
+      const parsedData = parseApiData(allDocuments.data, allFolderData);
+
+      setAllFolderData(parsedData);
+      setPopoverOpen(false);
+      setSelectedFilesState([]);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+    setIsLoadingDelete(false);
+  };
 
   return (
     <Popover
       open={popoverOpen}
-      handler={() => setPopoverOpen(!popoverOpen)}
+      handler={() => {
+        setPopoverOpen(!popoverOpen);
+      }}
       placement="bottom-end"
     >
       <PopoverHandler>
@@ -48,20 +70,32 @@ function ContentRowPopover({ id, type }: { id: number; type: string }) {
         onPointerLeaveCapture={() => {}}
         className="min-w-[150px] w-fit border border-gray-100 rounded-[10px] shadow outline-0 overflow-hidden p-0"
       >
-        <div className="p-[12px] bg-white border-b border-b-gray-100 flex items-center gap-[8px] hover:bg-primary-100/80 cursor-pointer">
-          <Pencil className="w-[20px] h-[20px]" />
-          <p>Edit</p>
-        </div>
-        <div
-          onClick={() => {
-            handleDelete(id);
-            setPopoverOpen(false);
-          }}
-          className="p-[12px] bg-white border-b border-b-gray-100 flex items-center gap-[8px] hover:bg-primary-100/80 cursor-pointer"
+        {type === "folder" ? (
+          <div
+            onClick={() => {
+              openEditFolderPopup(true);
+              setPopoverOpen(false);
+              setSelectedItemId(id);
+            }}
+            className="p-[12px] bg-white border-b border-b-gray-100 flex items-center gap-[8px] hover:bg-primary-100/80 cursor-pointer"
+          >
+            <Pencil className="w-[20px] h-[20px]" />
+            <p>Edit</p>
+          </div>
+        ) : (
+          <></>
+        )}
+        <button
+          disabled={isLoadingDelete}
+          onClick={() => handleDeleteFolder(id)}
+          className="w-full p-[12px] bg-white border-b border-b-gray-100 flex items-center gap-[8px] hover:bg-primary-100/80 cursor-pointer focus:outline-0"
         >
-          <Trash2 className="w-[20px] h-[20px]" />
-          <p>Delete</p>
-        </div>
+          {isLoadingDelete ? <LoaderCircle className="animate-spin" /> : <></>}
+          <div className="flex items-center gap-[8px]">
+            <Trash2 className="w-[20px] h-[20px]" />
+            <p>Delete</p>
+          </div>
+        </button>
         {type === "folder" ? (
           <div
             onClick={() => {

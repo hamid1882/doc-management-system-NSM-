@@ -11,6 +11,8 @@ import {
   allDataState,
   getAllFilesNumbers,
   getAllFoldersNumbers,
+  iframePopupState,
+  isLoadingFolderDataState,
   selectedFilesState,
   selectedItemIdState,
 } from "../redux/atoms";
@@ -39,12 +41,15 @@ function FolderSidebar() {
   const folderCount = useRecoilValue(getAllFoldersNumbers);
   const fileCount = useRecoilValue(getAllFilesNumbers);
   const setSelectedItemId = useSetRecoilState(selectedItemIdState);
+  const setIframePopupState = useSetRecoilState(iframePopupState);
+  const isLoadingFolderData = useRecoilValue(isLoadingFolderDataState);
 
   const handleFolderSelect = (id: number, type: string) => {
     setSelectedFiles([]);
+    setSelectedItemId(id);
 
-    if (type === "folder") {
-      setSelectedItemId(id);
+    if (type === "file") {
+      setIframePopupState(true);
     }
 
     const updatedItems = toggleFolderExpanded(rowItems, id);
@@ -70,7 +75,7 @@ function FolderSidebar() {
       `}</style>
       <div
         className={`${
-          expanded ? "w-[320px] bg-white" : "w-0"
+          expanded ? "min-w-[320px] bg-white" : "w-0"
         }   shadow-xl border-r border-r-gray-100 h-full relative transition-all duration-300 ease-in-out`}
       >
         <div className={`absolute -right-[14px] top-[22px]`}>
@@ -119,8 +124,17 @@ function FolderSidebar() {
                   level={0}
                 />
               ))
+            ) : isLoadingFolderData ? (
+              <div className="space-y-[10px]">
+                {Array.from({ length: 14 }).map((_, index) => (
+                  <div
+                    key={index}
+                    className="h-[30px] rounded-[10px] shadow w-full bg-primary-200 animate-pulse"
+                  ></div>
+                ))}
+              </div>
             ) : (
-              <></>
+              <p>No Data Found</p>
             )}
           </div>
         </div>

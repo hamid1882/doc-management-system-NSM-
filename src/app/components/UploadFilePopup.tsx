@@ -1,22 +1,29 @@
 "use client";
 
-import { FileUp, X } from "lucide-react";
+import documentsService from "@/api/services/documentsService";
+import { FileUp, LoaderCircle, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { TreeItem } from "../data/initialContent";
+import { parseApiData, TreeItem } from "../data/initialContent";
 import {
   allDataState,
   isCreateFilePopupState,
   selectedItemIdState,
+  toastDataState,
 } from "../redux/atoms";
 import FileUploadProgress from "./FileUploadProgress";
+
+interface FileMetadata {
+  fileUrl: string;
+  fileSize: number;
+  fileType: string;
+}
 
 function UploadFilePopup() {
   const [open, setOpen] = useRecoilState(isCreateFilePopupState);
   const [progress, setProgress] = useState(0);
   const uniqueId = Date.now() + Math.floor(Math.random() * 1000);
-
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<FileMetadata | null>(null);
   const selectedItemId = useRecoilValue(selectedItemIdState);
   const [inputData, setInputData] = useState<TreeItem>({
     name: "",
@@ -28,79 +35,120 @@ function UploadFilePopup() {
     type: "file" as const,
     id: uniqueId,
   });
+  const [allFolderData, setAllFolderData] = useRecoilState(allDataState);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDocumentUploaded, setIsDocumentUploaded] = useState(false);
+  const setToastData = useSetRecoilState(toastDataState);
 
-  const setAllFolderData = useSetRecoilState(allDataState);
+  const handleFileUpload = async (file: File) => {
+    if (!file) {
+      console.error("No file selected");
+      return;
+    }
+    setIsDocumentUploaded(true);
+    setInputData((prev) => ({ ...prev, name: file.name }));
 
-  // Helper function to recursively find and update the selected folder
-  const updateFolderStructure = (items: TreeItem[]): TreeItem[] => {
-    return items.map((item) => {
-      // If this is the selected folder, add the new folder to its children
-      if (item.id === selectedItemId) {
-        return {
-          ...item,
-          children: [inputData, ...(item.children || [])],
-        };
-      }
+    const formData = new FormData();
+    formData.append("file", file);
 
-      // If this item has children, recursively search them
-      if (item.children && item.children.length > 0) {
-        return {
-          ...item,
-          children: updateFolderStructure(item.children),
-        };
-      }
+    try {
+      const fileMetaData = await documentsService.uploadFile(
+        formData,
+        (percentCompleted: number) => {
+          // Update progress state with the percentage from axios
+          setProgress(percentCompleted);
+        }
+      );
 
-      // Otherwise, return the item unchanged
-      return item;
-    });
+      setFile(fileMetaData.data);
+
+      setInputData((prev) => ({
+        ...prev,
+        name: file.name,
+        description: "",
+        ...fileMetaData.data,
+      }));
+    } catch (error: unknown) {
+      console.log(error);
+      setFile(null);
+      setIsDocumentUploaded(false);
+      setToastData({
+        trigger: true,
+        isError: true,
+        message: `Error: ${error}`,
+      });
+    }
+  };
+
+  const handleUploadFile = async () => {
+    setIsLoading(true);
+
+    if (!file) {
+      console.error("No file selected");
+      return;
+    }
+
+    try {
+      await documentsService.createFileDocument({
+        name: inputData.name,
+        description: "",
+        type: "file",
+        fileUrl: file.fileUrl,
+        fileSize: file.fileSize,
+        fileType: file.fileType,
+        parentId: selectedItemId ? selectedItemId : null,
+      });
+
+      const getAllDocuments = await documentsService.getAllDocuments();
+
+      const parsedData = parseApiData(getAllDocuments.data, allFolderData);
+
+      setAllFolderData(parsedData);
+
+      setFile(null);
+      setOpen(false);
+      setIsDocumentUploaded(false);
+      setToastData({
+        trigger: true,
+        isError: false,
+        message: `Success: File Created`,
+      });
+    } catch (error: unknown) {
+      console.log(error);
+      setIsDocumentUploaded(false);
+      setFile(null);
+      setToastData({
+        trigger: false,
+        isError: false,
+        message: `Error: ${error}`,
+      });
+    }
+
+    setIsLoading(false);
   };
 
   const handleSubmit = () => {
-    if (!inputData.name || !inputData.description) {
-      window.alert("Please fill all the inputs");
+    if (!inputData.name) {
+      setToastData({
+        trigger: true,
+        isError: true,
+        message: `Error: Please Upload the File`,
+      });
+      return;
     }
 
-    setAllFolderData((prev) => {
-      // If no folder is selected, add to root level
-      if (!selectedItemId) {
-        return [inputData, ...prev];
-      }
-      // Apply the update function to the current data
-      return updateFolderStructure(prev);
-    });
-
-    setOpen(false);
-    setFile(null);
+    handleUploadFile();
   };
 
   useEffect(() => {
-    if (file) {
-      // Reset progress when a new file is selected
+    if (!isDocumentUploaded) {
       setProgress(0);
-
-      // Simulate upload progress from 0 to 100 over 2 seconds
-      const duration = 1500; // 2 seconds in milliseconds
-      const steps = 15; // Number of progress updates
-      const interval = duration / steps;
-
-      const timer = setInterval(() => {
-        setProgress((prevProgress) => {
-          const nextProgress = prevProgress + 100 / steps;
-
-          // Clear interval when progress reaches 100
-          if (nextProgress >= 100) {
-            clearInterval(timer);
-            return 100;
-          }
-
-          return nextProgress;
-        });
-      }, interval);
-
-      // Clean up interval on component unmount or when file changes
-      return () => clearInterval(timer);
     }
-  }, [file]);
+  }, [isDocumentUploaded]);
+
+  useEffect(() => {
+    setIsDocumentUploaded(false);
+  }, []);
 
   return (
     <div
@@ -128,7 +176,7 @@ function UploadFilePopup() {
             className="cursor-pointer"
           />
         </div>
-        {!file ? (
+        {!isDocumentUploaded ? (
           <div className="p-[16px] space-y-[12px]">
             <div className="flex flex-col gap-[6px]">
               <label>Browse document</label>
@@ -137,15 +185,11 @@ function UploadFilePopup() {
                   type="file"
                   name="file"
                   id="file-upload"
+                  accept=".txt,.jpg,.jpeg,.gif,.png,.webp,.svg"
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                   onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
-                      setInputData((prev) => ({
-                        ...prev,
-                        name: e.target.files?.[0].name || "",
-                        description: e.target.files?.[0].name || "",
-                      }));
-                      setFile(e.target.files[0]);
+                    if (e.target.files && e.target.files.length > 0) {
+                      handleFileUpload(e.target.files[0]);
                     }
                   }}
                 />
@@ -155,14 +199,13 @@ function UploadFilePopup() {
                   </div>
                 </div>
               </div>
+              <p className="text-[14px]">
+                Supported: .txt .jpg .jpeg .gif .png .webp .svg
+              </p>
             </div>
           </div>
         ) : (
-          <FileUploadProgress
-            fileName={inputData.name}
-            fileSize={file.size}
-            progress={progress}
-          />
+          <FileUploadProgress fileName={inputData.name} progress={progress} />
         )}
         <div className="p-[12px] border-t border-t-gray-100 flex justify-end items-center gap-[10px]">
           <button
@@ -175,9 +218,11 @@ function UploadFilePopup() {
             Cancel
           </button>
           <button
+            disabled={isLoading && !file}
             onClick={handleSubmit}
-            className="w-[120px] bg-primary-500 hover:bg-primary-500/80 p-[12px] rounded-[10px] text-white cursor-pointer"
+            className="w-[120px] bg-primary-500 hover:bg-primary-500/80 p-[12px] rounded-[10px] text-white cursor-pointer flex items-center justify-center gap-[8px]"
           >
+            {isLoading ? <LoaderCircle className="animate-spin" /> : <></>}
             Upload
           </button>
         </div>

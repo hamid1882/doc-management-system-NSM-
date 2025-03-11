@@ -1,24 +1,75 @@
+import documentsService from "@/api/services/documentsService";
 import {
   Popover,
   PopoverContent,
   PopoverHandler,
 } from "@material-tailwind/react";
-import { Filter, X } from "lucide-react";
+import { Filter, LoaderCircle, X } from "lucide-react";
 import { useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { parseApiData } from "../data/initialContent";
+import { allDataState, paginationDataState } from "../redux/atoms";
 
 function AddFiltersPopover() {
+  const [allFolderData, setAllFolderData] = useRecoilState(allDataState);
   const [openPopover, setOpenPopover] = useState(false);
   const [filterInputData, setFilterInputData] = useState({
     name: "",
     description: "",
     date: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleFilterInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilterInputData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
+  };
+  const setPaginationData = useSetRecoilState(paginationDataState);
+
+  const handleFilterDocs = async () => {
+    setIsLoading(true);
+    try {
+      const documentData = await documentsService.getAllDocumentsByFilter(
+        filterInputData.name,
+        filterInputData.description,
+        filterInputData.date
+      );
+      const parsedData = parseApiData(documentData.data, allFolderData);
+      setAllFolderData(parsedData);
+
+      setPaginationData((prev) => ({
+        ...prev,
+        totalPages: documentData.totalPages,
+        currentPage: documentData.currentPage,
+        count: documentData.count,
+      }));
+    } catch (error) {
+      console.error("Error occured", error);
+    }
+    setIsLoading(false);
+  };
+
+  const handleClearDocs = async () => {
+    try {
+      const documentData = await documentsService.getAllDocumentsByFilter(
+        "",
+        "",
+        ""
+      );
+      const parsedData = parseApiData(documentData.data, allFolderData);
+      setAllFolderData(parsedData);
+
+      setPaginationData((prev) => ({
+        ...prev,
+        totalPages: documentData.totalPages,
+        currentPage: documentData.currentPage,
+        count: documentData.count,
+      }));
+    } catch (error) {
+      console.error("Error occured", error);
+    }
   };
 
   const handleClear = () => {
@@ -27,6 +78,11 @@ function AddFiltersPopover() {
       description: "",
       date: "",
     });
+    handleClearDocs();
+  };
+
+  const handleSubmitFilters = () => {
+    handleFilterDocs();
   };
 
   return (
@@ -102,7 +158,12 @@ function AddFiltersPopover() {
             >
               Cancel
             </button>
-            <button className="w-[120px] bg-primary-500 hover:bg-primary-500/80 p-[12px] rounded-[10px] text-white cursor-pointer">
+            <button
+              disabled={isLoading}
+              onClick={handleSubmitFilters}
+              className="w-[120px] bg-primary-500 hover:bg-primary-500/80 p-[12px] rounded-[10px] text-white cursor-pointer flex items-center justify-center gap-[8px]"
+            >
+              {isLoading ? <LoaderCircle className="animate-spin" /> : <></>}
               Apply
             </button>
           </div>

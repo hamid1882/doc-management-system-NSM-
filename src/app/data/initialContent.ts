@@ -447,3 +447,49 @@ export const findItemAndParents = (
   // If we get here, the item wasn't found in this branch
   return [];
 };
+
+export const parseApiData = (data: any[], existingItems: any[] = []): any[] => {
+  if (!Array.isArray(data)) return [];
+
+  // Helper function to find a node by id in the existing data
+  const findNodeById = (items: any[], id: number | string): any | null => {
+    for (const item of items) {
+      if (item.id === id || item.id === String(id)) return item;
+      if (item.children && item.children.length > 0) {
+        const found = findNodeById(item.children, id);
+        if (found) return found;
+      }
+    }
+    return null;
+  };
+
+  const transformNode = (node: any): any => {
+    // Find corresponding node in existing data (if exists)
+    const existingNode = findNodeById(existingItems, node._id);
+
+    // Create a new object with transformed properties
+    const transformedNode = {
+      ...node,
+      id: node._id || node.id, // Use _id if available, otherwise keep existing id
+      isExpanded: existingNode ? existingNode.isExpanded : false, // Preserve isExpanded state if exists
+    };
+
+    // Remove the original _id property
+    if (transformedNode._id) {
+      delete transformedNode._id;
+    }
+
+    // Recursively transform children if they exist
+    if (
+      Array.isArray(transformedNode.children) &&
+      transformedNode.children.length > 0
+    ) {
+      transformedNode.children = transformedNode.children.map(transformNode);
+    }
+
+    return transformedNode;
+  };
+
+  // Transform each top-level item
+  return data.map(transformNode);
+};

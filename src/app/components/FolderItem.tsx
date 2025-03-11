@@ -1,4 +1,4 @@
-import { ChevronRight, File, Folder, Plus } from "lucide-react";
+import { ChevronRight, Eye, File, Folder, Plus } from "lucide-react";
 import { useSetRecoilState } from "recoil";
 import { TreeItem } from "../data/initialContent";
 import { isCreateFolderPopupState } from "../redux/atoms";
@@ -28,11 +28,11 @@ function FolderItem({
             : "hover:bg-primary-150"
         }`}
       >
-        <div className="flex items-center gap-[8px] w-[90%]">
+        <div className="flex items-center gap-[8px] w-[88%] overflow-hidden ">
           {/* Add left padding based on level */}
           <div
-            style={{ paddingLeft: `${level * 24}px` }}
-            className="flex items-center gap-[8px]"
+            style={{ paddingLeft: `${level * 10}px` }}
+            className="flex items-center gap-[8px] w-full"
           >
             {data.type === "folder" && (
               <ChevronRight
@@ -45,12 +45,12 @@ function FolderItem({
             {data.type === "folder" ? (
               <Folder className="w-[17px] h-[17px] z-10" />
             ) : (
-              <File className="w-[17px] h-[17px] z-10" />
+              <File className="w-[22px] h-[22px] z-10" />
             )}
             <p className="text-[13px] font-[400] truncate">{data.name}</p>
           </div>
         </div>
-        {data.type === "folder" && (
+        {data.type === "folder" ? (
           <div
             onClick={(e) => {
               e.stopPropagation();
@@ -60,6 +60,8 @@ function FolderItem({
           >
             <Plus className="w-full h-full font-thin text-[8px] p-[2px]" />
           </div>
+        ) : (
+          <Eye className="w-[20px] h-[20px] rounded-full text-primary-500" />
         )}
       </div>
 

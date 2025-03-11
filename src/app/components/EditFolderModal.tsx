@@ -2,18 +2,17 @@
 
 import documentsService from "@/api/services/documentsService";
 import { LoaderCircle, X } from "lucide-react";
-import { useState } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { parseApiData, TreeItem } from "../data/initialContent";
 import {
   allDataState,
-  isCreateFolderPopupState,
+  isEditFolderPopupState,
   selectedItemIdState,
-  toastDataState,
 } from "../redux/atoms";
 
-function CreateFolderModal() {
-  const [open, setOpen] = useRecoilState(isCreateFolderPopupState);
+function EditFolderModal() {
+  const [open, setOpen] = useRecoilState(isEditFolderPopupState);
   const uniqueId = Date.now() + Math.floor(Math.random() * 1000);
   const selectedItemId = useRecoilValue(selectedItemIdState);
   const [inputData, setInputData] = useState<TreeItem>({
@@ -26,55 +25,41 @@ function CreateFolderModal() {
     type: "folder" as const,
     id: uniqueId,
   });
-  const setToastData = useSetRecoilState(toastDataState);
 
   const [allFolderData, setAllFolderData] = useRecoilState(allDataState);
+  const [isLoadingFolderData, setIsLoadingFolderData] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleInputData = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleAddFolder = async () => {
-    setIsLoading(true);
-    try {
-      await documentsService.createDocument({
-        name: inputData.name,
-        description: inputData.description,
-        type: "folder",
-      });
-
-      const getAllDocuments = await documentsService.getAllDocuments();
-
-      const parsedData = parseApiData(getAllDocuments.data, allFolderData);
-
-      setAllFolderData(parsedData);
-      setOpen(false);
-      setToastData({
-        trigger: true,
-        isError: false,
-        message: "Folder Created",
-      });
-    } catch (error) {
-      console.log(error);
-      setToastData({
-        trigger: true,
-        isError: true,
-        message: "Error: Creating Folder",
-      });
+  const handleFetchById = async () => {
+    if (!selectedItemId) {
+      console.error("Item not selected");
+      return;
     }
-    setIsLoading(false);
+    setIsLoadingFolderData(true);
+
+    try {
+      const fetchedData = await documentsService.getById(selectedItemId);
+
+      setInputData((prev) => ({
+        ...prev,
+        name: fetchedData.data.name,
+        description: fetchedData.data.description,
+      }));
+    } catch (error) {
+      console.error("Error occured fetching the document", error);
+    }
+
+    setIsLoadingFolderData(false);
   };
 
-  const handleAddChildFolder = async () => {
+  const handleEditFolder = async () => {
     setIsLoading(true);
     try {
-      await documentsService.createChildDocument({
-        name: inputData.name,
-        description: inputData.description,
-        type: "folder",
-        parentId: selectedItemId,
-      });
+      await documentsService.updateDocument(selectedItemId, inputData);
 
       const getAllDocuments = await documentsService.getAllDocuments();
 
@@ -82,18 +67,8 @@ function CreateFolderModal() {
 
       setAllFolderData(parsedData);
       setOpen(false);
-      setToastData({
-        trigger: true,
-        isError: false,
-        message: "Folder Created",
-      });
     } catch (error) {
       console.log(error);
-      setToastData({
-        trigger: true,
-        isError: true,
-        message: "Error: Creating Folder",
-      });
     }
     setIsLoading(false);
   };
@@ -104,12 +79,15 @@ function CreateFolderModal() {
       return;
     }
 
-    if (!selectedItemId) {
-      handleAddFolder();
-    } else {
-      handleAddChildFolder();
-    }
+    handleEditFolder();
   };
+
+  useEffect(() => {
+    setInputData((prev) => ({ ...prev, name: "", description: "" }));
+    if (open) {
+      handleFetchById();
+    }
+  }, [open]);
 
   return (
     <div
@@ -125,31 +103,39 @@ function CreateFolderModal() {
         } w-[450px] bg-white rounded-[10px] shadow transition-all`}
       >
         <div className="flex items-center justify-between p-[12px] border-b border-b-gray-100">
-          <p className="font-semibold">Create Folder</p>
+          <p className="font-semibold">Edit Folder</p>
           <X onClick={() => setOpen(false)} className="cursor-pointer" />
         </div>
         <div className="p-[16px] space-y-[12px]">
           <div className="flex flex-col gap-[6px]">
             <label>Name</label>
-            <input
-              type="text"
-              name="name"
-              value={inputData["name"]}
-              onChange={handleInputData}
-              placeholder="Folder name"
-              className="w-full rounded-[10px] border border-gray-100 p-[12px] focus:outline-0"
-            />
+            {!isLoadingFolderData ? (
+              <input
+                type="text"
+                name="name"
+                value={inputData["name"]}
+                onChange={handleInputData}
+                placeholder="Folder name"
+                className="w-full rounded-[10px] border border-gray-100 p-[12px] focus:outline-0"
+              />
+            ) : (
+              <div className="w-full h-[50px] rounded-[10px] border border-gray-100 p-[12px] focus:outline-0 bg-primary-200 animate-pulse"></div>
+            )}
           </div>
           <div className="flex flex-col gap-[6px]">
             <label>Description</label>
-            <input
-              type="text"
-              name="description"
-              value={inputData["description"]}
-              onChange={handleInputData}
-              placeholder="Folder Description"
-              className="w-full rounded-[10px] border border-gray-100 p-[12px] focus:outline-0"
-            />
+            {!isLoadingFolderData ? (
+              <input
+                type="text"
+                name="description"
+                value={inputData["description"]}
+                onChange={handleInputData}
+                placeholder="Folder Description"
+                className="w-full rounded-[10px] border border-gray-100 p-[12px] focus:outline-0"
+              />
+            ) : (
+              <div className="w-full h-[50px] rounded-[10px] border border-gray-100 p-[12px] focus:outline-0 bg-primary-200 animate-pulse"></div>
+            )}
           </div>
         </div>
         <div className="p-[12px] border-t border-t-gray-100 flex justify-end items-center gap-[10px]">
@@ -165,7 +151,7 @@ function CreateFolderModal() {
             className="w-[120px] bg-primary-500 hover:bg-primary-500/80 p-[12px] rounded-[10px] text-white cursor-pointer flex items-center justify-center gap-[8px]"
           >
             {isLoading ? <LoaderCircle className="animate-spin" /> : <></>}
-            Create
+            Update
           </button>
         </div>
       </div>
@@ -173,4 +159,4 @@ function CreateFolderModal() {
   );
 }
 
-export default CreateFolderModal;
+export default EditFolderModal;

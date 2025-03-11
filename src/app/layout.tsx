@@ -6,6 +6,9 @@ import "./globals.css";
 import Providers from "./Providers";
 import CreateFolderModal from "./components/CreateFolderModal";
 import UploadFilePopup from "./components/UploadFilePopup";
+import EditFolderModal from "./components/EditFolderModal";
+import IframeModal from "./components/IframeModal";
+import Toast from "./components/Toast";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -31,7 +34,10 @@ export default function RootLayout({
             <FolderSidebar />
             {children}
             <CreateFolderModal />
+            <EditFolderModal />
             <UploadFilePopup />
+            <IframeModal />
+            <Toast />
           </div>
         </Providers>
       </body>

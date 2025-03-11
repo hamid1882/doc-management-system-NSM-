@@ -1,35 +1,20 @@
-import { atom, selector, selectorFamily, AtomEffect } from "recoil";
-import { rowItems, TreeItem } from "../data/initialContent";
+import { atom, selector } from "recoil";
+import { TreeItem } from "../data/initialContent";
 
-// LocalStorage effect for persisting data
-const localStorageEffect: AtomEffect<TreeItem[]> = ({ setSelf, onSet }) => {
-  // Check if window is defined (we're in the browser, not during SSR)
-  if (typeof window !== "undefined") {
-    // When the atom is first initialized, try to get the value from localStorage
-    const savedValue = localStorage.getItem("doc-management-data");
-    if (savedValue != null) {
-      try {
-        setSelf(JSON.parse(savedValue));
-      } catch (error) {
-        console.error("Failed to parse saved data", error);
-      }
-    }
-
-    // Subscribe to state changes and update localStorage
-    onSet((newValue, _, isReset) => {
-      if (isReset) {
-        localStorage.removeItem("doc-management-data");
-      } else {
-        localStorage.setItem("doc-management-data", JSON.stringify(newValue));
-      }
-    });
-  }
-};
-
-export const allDataState = atom({
+export const allDataState = atom<TreeItem[]>({
   key: "allDataState",
-  default: rowItems,
-  effects: [localStorageEffect],
+  default: [],
+});
+
+export const paginationDataState = atom({
+  key: "paginationDataState",
+  default: {
+    page: 1,
+    limit: 10,
+    currentPage: 1,
+    count: 0,
+    totalPages: 1,
+  },
 });
 
 export const selectedFilesState = atom<string[]>({
@@ -42,8 +27,23 @@ export const isCreateFolderPopupState = atom({
   default: false,
 });
 
+export const isEditFolderPopupState = atom({
+  key: "isEditFolderPopupState",
+  default: false,
+});
+
 export const isCreateFilePopupState = atom({
   key: "isCreateFilePopupState",
+  default: false,
+});
+
+export const iframePopupState = atom({
+  key: "iframePopupState",
+  default: false,
+});
+
+export const isLoadingFolderDataState = atom({
+  key: "isLoadingFolderDataState",
   default: false,
 });
 
@@ -103,48 +103,16 @@ export const getAllFilesNumbers = selector({
   },
 });
 
-// Selector family to remove an item by ID
-export const removeItemById = selectorFamily({
-  key: "removeItemById",
-  get:
-    () =>
-    ({ get }) => {
-      // This is just for reading the current state
-      return get(allDataState);
-    },
-  set:
-    (itemId: number) =>
-    ({ set }) => {
-      set(allDataState, (prevItems) => {
-        // Helper function to remove an item recursively
-        const removeItem = (items: TreeItem[]): TreeItem[] => {
-          // Filter out the item with the matching ID at current level
-          const filteredItems = items.filter((item) => item.id !== itemId);
-
-          // If we removed an item (length changed), return the filtered array
-          if (filteredItems.length !== items.length) {
-            return filteredItems;
-          }
-
-          // Otherwise, recursively check children of each item
-          return filteredItems.map((item) => {
-            if (item.children && item.children.length > 0) {
-              return {
-                ...item,
-                children: removeItem(item.children),
-              };
-            }
-            return item;
-          });
-        };
-
-        // Apply the removal function to the root items
-        return removeItem(prevItems);
-      });
-    },
-});
-
 export const selectedItemIdState = atom<number | null>({
   key: "selectedItemIdState",
   default: null,
+});
+
+export const toastDataState = atom({
+  key: "toastDataState",
+  default: {
+    trigger: false,
+    isError: false,
+    message: "",
+  },
 });

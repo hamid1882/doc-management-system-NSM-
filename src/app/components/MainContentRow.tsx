@@ -59,23 +59,25 @@ function MainContentRow({
       className={`flex justify-between gap-[16px]  transition-all h-[60px] items-center border-b border-gray-100  ${
         selectedFilesArr &&
         selectedFilesArr[selectedFilesArr.length - 1] === name
-          ? "bg-primary-200/50 hover:bg-primary-200/30"
+          ? "bg-primary-200/50 hover:bg-primary-200/30 border-primary-200"
           : "hover:bg-primary-150"
       }`}
     >
       {/* name */}
       <div className="flex items-center gap-[8px] w-[20%]">
-        <ChevronRight
-          className={`${expanded && type === "folder" ? "w-[30px]" : "w-0"} ${
-            expanded ? "rotate-90" : ""
-          } transition-all`}
-        />
+        <div className="pl-[6px]">
+          <ChevronRight
+            className={`${expanded && type === "folder" ? "w-[30px]" : "w-0"} ${
+              expanded ? "rotate-90" : ""
+            } transition-all`}
+          />
+        </div>
         <div className="flex items-center gap-[18px] w-full">
           <div className="w-[25px] h-[25px] relative select-none">
             {type === "folder" ? (
               <Folder className="w-full h-full" />
             ) : (
-              <File className="w-full h-full" />
+              <File className="w-[25px] h-[25px] " />
             )}
             {childrenLength && type === "folder" ? (
               <p className="absolute -top-[12px] -left-[4px] bg-secondary-500 rounded-full h-[16px] min-w-[16px] flex justify-center items-center font-bold w-fit text-[8px]">
@@ -89,7 +91,12 @@ function MainContentRow({
         </div>
       </div>
       {/* description */}
-      <p className="truncate w-[30%] text-left">{description}</p>
+      <p
+        className={`truncate w-[30%] text-center
+        }`}
+      >
+        {description ? description : "-"}
+      </p>
       {/* created at */}
       <p className="w-[20%] text-center truncate">
         {createdAtFormatted.formattedDate}
